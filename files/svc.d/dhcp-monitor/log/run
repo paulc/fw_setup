@@ -1,0 +1,2 @@
+#!/bin/sh
+exec setuidgid root dumblog -c /var/log/dhcp-monitor.log

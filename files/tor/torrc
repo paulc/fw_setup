@@ -1,0 +1,12 @@
+
+User _tor
+DataDirectory /var/tor
+Log notice syslog
+RunAsDaemon 1
+
+AutomapHostsOnResolve 1
+
+SOCKSPort 9050
+TransPort 9040
+DNSPort 9053
+

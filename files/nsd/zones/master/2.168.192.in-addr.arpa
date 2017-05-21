@@ -1,0 +1,12 @@
+$ORIGIN 2.168.192.in-addr.arpa.
+$TTL 3600
+
+@                           IN      SOA     ns.pchak.net. root.pchak.net. 2017030601 1800 7200 86400 3600
+                            IN      NS      ns.pchak.net.
+
+ns                          IN      A       192.168.1.1
+
+1                           IN      PTR     fw.pchak.net.
+
+$INCLUDE /zones/master/2.168.192.in-addr.arpa-dhcp
+

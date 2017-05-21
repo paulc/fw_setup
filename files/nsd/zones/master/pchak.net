@@ -1,0 +1,33 @@
+$ORIGIN pchak.net.
+$TTL 3600
+
+@                           IN      SOA     ns.pchak.net. root.pchak.net. 2017030601 1800 7200 86400 3600
+                            IN      NS      ns.pchak.net.
+
+ns                          IN      A       192.168.1.1
+fw                         IN      A       192.168.1.1
+
+toughswitch                 IN      A       192.168.1.5 
+unifi                       IN      A       192.168.1.10
+
+hpenvy                      IN      A       192.168.4.10
+
+vultr                       IN      A       45.76.139.75
+linode                      IN      A       176.58.100.82
+
+b._dns-sd._udp              IN      PTR     @
+lb._dns-sd._udp             IN      PTR     @
+
+_ipp._tcp                   IN      PTR     hpenvy._ipp._tcp
+_ipps._tcp                  IN      PTR     hpenvy._ipps._tcp
+
+_universal._sub._ipp._tcp   IN      PTR     hpenvy._ipp._tcp
+_universal._sub._ipps._tcp  IN      PTR     hpenvy._ipps._tcp
+
+hpenvy._ipp._tcp            IN      SRV     0 0 631 hpenvy
+hpenvy._ipps._tcp           IN      SRV     0 0 443 hpenvy
+
+hpenvy._ipp._tcp            IN      TXT     "txtvers=1" "qtotal=1" "pdl=application/vnd.hp-PCL,image/jpeg,application/PCLm,image/urf" "rp=ipp/print" "PaperMax=<legal-A4" "kind=document,envelope,photo,postcard" "URF=CP1,MT1-2-8-9-10-11,PQ3-4-5,RS300-600,SRGB24,OB9,OFU0,W8-16,DEVW8-16,DEVRGB24-48,ADOBERGB24-48,DM3,IS1-7,V1.4" "ty=HP ENVY 5640 series" "product=(HP ENVY 5640 series)" "usb_MFG=HP" "usb_MDL=ENVY 5640 series" "priority=20" "mac=5c:b9:01:33:01:87" "adminurl=http://hpenvy.pchak.net./#hId-pgAirPrint" "note=" "TLS=1.2" "Fax=F" "UUID=1c852a4d-b800-1f08-abcd-5cb901330187" "Color=T" "Duplex=T" "Scan=T"
+hpenvy._ipps._tcp           IN      TXT     "txtvers=1" "qtotal=1" "pdl=application/vnd.hp-PCL,image/jpeg,application/PCLm,image/urf" "rp=ipp/print" "PaperMax=<legal-A4" "kind=document,envelope,photo,postcard" "URF=CP1,MT1-2-8-9-10-11,PQ3-4-5,RS300-600,SRGB24,OB9,OFU0,W8-16,DEVW8-16,DEVRGB24-48,ADOBERGB24-48,DM3,IS1-7,V1.4" "ty=HP ENVY 5640 series" "product=(HP ENVY 5640 series)" "usb_MFG=HP" "usb_MDL=ENVY 5640 series" "priority=20" "mac=5c:b9:01:33:01:87" "adminurl=http://hpenvy.pchak.net./#hId-pgAirPrint" "note=" "TLS=1.2" "Fax=F" "UUID=1c852a4d-b800-1f08-abcd-5cb901330187" "Color=T" "Duplex=T" "Scan=T"
+
+$INCLUDE /zones/master/pchak.net-dhcp
