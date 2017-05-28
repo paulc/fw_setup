@@ -1,0 +1,4 @@
+#!/bin/sh
+exec 2>&1
+echo starting $(pwd)
+exec setuidgid nobody ./ddns.sh

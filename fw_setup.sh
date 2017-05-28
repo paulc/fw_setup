@@ -8,7 +8,7 @@
 umask 022 || exit 1
 
 echo "[+] motd"
-ex -Fs motd <<'EOM' || exit 1
+ex -Fs /etc/motd <<'EOM' || exit 1
 2,$d
 wq
 EOM
@@ -45,10 +45,7 @@ interface "re0" {
 EOM
 
 echo "[+] packages"
-for p in pstree freedt dnscrypt-proxy curl tor torsocks
-do
-    pkg_add $p || exit 1
-done
+pkg_add pstree freedt dnscrypt-proxy curl tor torsocks || exit 1
 
 echo "[+] rc.local.conf"
 
@@ -58,13 +55,14 @@ rcctl enable sshd || exit 1
 rcctl set sshd flags "-o PermitRootLogin=prohibit-password -o PasswordAuthentication=no" || exit 1
 
 rcctl enable dhcpd || exit 1
-rcctl set dhcpd flags "re1 vlan0 vlan1 vlan2" || exit 1
+install -o root -g wheel files/dhcpd/dhcpd.conf /etc || exit 1
+rcctl set dhcpd flags "re1 vlan2 vlan3 vlan4 vlan5" || exit 1
 
 rcctl enable nsd || exit 1
 rcctl enable unbound || exit 1
 
-rcctl enable dnscrypt-proxy || exit 1
-rcctl set dnscrypt-proxy flags "-d -a 127.0.0.1:8053 -R cisco" || exit 1
+rcctl enable dnscrypt_proxy || exit 1
+rcctl set dnscrypt_proxy flags "-d -a 127.0.0.1:8053 -R cisco" || exit 1
 
 rcctl enable svscan || exit 1
 rcctl enable tor || exit 1
@@ -83,14 +81,25 @@ echo "[+] tor"
 install -o root -g wheel files/tor/torrc /etc/tor/ || exit 1
 
 echo "[+] freedt"
-mkdir /var/svc.d 
+mkdir /var/svc.d || exit 1
+mkdir /service || exit 1
+
 /usr/local/bin/mkservice root root /var/svc.d/dhcp-monitor || exit 1
 install -o root -g wheel -m 755 files/svc.d/dhcp-monitor/dhcp-monitor.sh /var/svc.d/dhcp-monitor/ || exit 1
 install -o root -g wheel -m 755 files/svc.d/dhcp-monitor/run /var/svc.d/dhcp-monitor/ || exit 1
 install -o root -g wheel -m 755 files/svc.d/dhcp-monitor/log/run /var/svc.d/dhcp-monitor/log/ || exit 1
-install -o root -g wheel files/parse-leases.awk files/parse-reverse.awk /var/svc.d/dhcp-monitor/ || exit 1
+install -o root -g wheel files/svc.d/dhcp-monitor/*.awk /var/svc.d/dhcp-monitor/ || exit 1
+
+cat >>/etc/newsyslog.conf <<'EOM'
+/var/log/dhcp-monitor.log               644  3     250  *     Z "svc -h /service/dhcp-monitor/log"
+EOM
+
+mkdir /var/svc.d/ddns
+install -o root -g wheel -m 755 files/svc.d/ddns/ddns.sh /var/svc.d/ddns.sh || exit 1
+install -o root -g wheel -m 755 files/svc.d/ddns/run /var/svc.d/run 1
 
 ln -s /var/svc.d/dhcp-monitor /service || exit 1
+ln -s /var/svc.d/ddns /service || exit 1
 
 echo "[+] Start services"
 sh /etc/netstart 

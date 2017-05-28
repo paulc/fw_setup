@@ -4,7 +4,12 @@ DataDirectory /var/tor
 Log notice syslog
 RunAsDaemon 1
 
+ClientOnly 1
 AutomapHostsOnResolve 1
+VirtualAddrNetworkIPv4 10.192.0.0/10
+
+ControlPort unix:/var/tor/control
+CookieAuthentication 0
 
 SOCKSPort 9050
 TransPort 9040
